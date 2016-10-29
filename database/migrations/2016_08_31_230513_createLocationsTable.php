@@ -19,8 +19,15 @@ class CreateLocationsTable extends Migration
                 $table->string('name');
                 $table->string('description');
                 $table->string( 'customer_name' );
-                $table->integer( 'customer_id' );
+                $table->integer( 'customer_id' )
+                        ->unsigned()
+                        ->nullable();
                 $table->timestamps();
+
+                $table->foreign( 'customer_id' )
+                        ->references('id')
+                        ->on('customers')
+                        ->onDelete('set null');
             }
         );
     }

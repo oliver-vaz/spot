@@ -20,8 +20,16 @@ class CreateTariffTable extends Migration
             $table->float( 'price_per_car' );
             $table->float( 'price_per_person' );
             $table->integer( 'customer_name' );
-            $table->integer( 'customer_id' );
+            $table->integer( 'customer_id' )
+                    ->unsigned()
+                    ->nullable();
             $table->timestamps();
+
+            $table->foreign( 'customer_id' )
+                    ->references('id')
+                    ->on('customers')
+                    ->onDelete('set null');
+
         });
     }
 

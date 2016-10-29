@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAlarmsTable extends Migration
+class CreateMaintenanceTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,15 +12,19 @@ class CreateAlarmsTable extends Migration
      */
     public function up()
     {
-        Schema::create( 'alarms', 
+        Schema::create( 'maintenances',
             function( Blueprint $table )
             {
-                $table->increments('id');
-                $table->string('title');
-                $table->string('content');
-                $table->boolean('active');
-                $table->integer('task_id')->unsigned()->nullable();
-                $table->integer('car_id')->unsigned()->nullable();
+                $table->increments( 'id' );
+                $table->string( 'made_by' );
+                $table->string( 'comments' );
+                $table->integer( 'period' );
+                $table->integer( 'car_id' )
+                        ->unsigned()
+                        ->nullable();
+                $table->integer( 'task_id' )
+                        ->unsigned()
+                        ->nullable();
                 $table->timestamps();
 
                 $table->foreign('task_id')
@@ -43,6 +47,6 @@ class CreateAlarmsTable extends Migration
      */
     public function down()
     {
-        Schema::drop( 'alarms' );
+        Schema::drop( 'maintenances' );
     }
 }

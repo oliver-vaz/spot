@@ -16,9 +16,24 @@ class CreateCarAssignmentTable extends Migration
             function( Blueprint $table )
             {
                 $table->increments( 'id' );
-                $table->integer( 'car_id' );
-                $table->integer( 'driver_id' );
+                $table->integer( 'car_id' )
+                        ->unsigned()
+                        ->nullable();
+                $table->integer( 'driver_id' )
+                        ->unsigned()
+                        ->nullable();
+
                 $table->timestamps();
+
+                $table->foreign( 'car_id' )
+                        ->references( 'id' )
+                        ->on( 'cars' )
+                        ->onDelete( 'set null' );
+
+                $table->foreign( 'driver_id' )
+                        ->references( 'id' )
+                        ->on( 'drivers' )
+                        ->onDelete( 'set null' );
             }
         );
     }

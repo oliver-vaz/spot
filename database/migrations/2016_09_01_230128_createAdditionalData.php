@@ -14,11 +14,18 @@ class CreateAdditionalData extends Migration
     {
         Schema::create( 'additionaldata', function(Blueprint $table){
             $table->increments( 'id' );
-            $table->integer( 'trip_id' );
+            $table->integer( 'trip_id' )
+                    ->unsigned()
+                    ->nullable();
             $table->string( 'description' );
             $table->float( 'price' );
             $table->integer( 'no_people' );
             $table->timestamps();
+
+            $table->foreign( 'trip_id' )
+                    ->references( 'id' )
+                    ->on( 'trips' )
+                    ->onDelete( 'set null' );
         });
     }
 

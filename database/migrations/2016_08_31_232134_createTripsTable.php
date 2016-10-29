@@ -15,10 +15,35 @@ class CreateTripsTable extends Migration
         Schema::create( 'trips', function(Blueprint $table){
             $table->increments( 'id' );
             $table->dateTime( '_date' );
-            $table->integer( 'location_id' );
-            $table->integer( 'tariff_id' );
-            $table->integer( 'driver_id' );
+            $table->integer( 'location_id' )
+                    ->unsigned()
+                    ->nullable();
+
+            $table->integer( 'tariff_id' )
+                    ->unsigned()
+                    ->nullable();
+
+            $table->integer( 'driver_id' )
+                    ->unsigned()
+                    ->nullable();
+
             $table->timestamps();
+
+            $table->foreign( 'location_id' )
+                    ->references('id')
+                    ->on('locations')
+                    ->onDelete('set null');
+
+            $table->foreign( 'tariff_id' )
+                    ->references('id')
+                    ->on('tariffs')
+                    ->onDelete('set null');
+
+            $table->foreign( 'driver_id' )
+                    ->references('id')
+                    ->on('drivers')
+                    ->onDelete('set null');
+
         });
     }
 
