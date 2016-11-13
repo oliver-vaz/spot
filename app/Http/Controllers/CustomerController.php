@@ -1,13 +1,13 @@
 <?php
 
-namespace Spot\Http\Controllers;
+namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use Spot\Http\Requests;
-use Spot\Customer;
-use Spot\Location;
-use Spot\Tariff;
+use App\Http\Requests;
+use App\Customer;
+use App\Location;
+use App\Tariff;
 
 class CustomerController extends Controller
 {

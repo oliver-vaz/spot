@@ -1,13 +1,28 @@
 <?php
 
-namespace Spot;
+namespace App;
 
 use Validator;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\AssignData;
+use App\Traits\Active;
 
 class Customer extends Model
 {
-    protected $table 	= 'customers';
+	use assignData, active;
+
+    protected $table	= 'customers';
+    private $map_fields	= [
+    			'name' 			=> 'name',
+    			'short_name' 	=> 'shortname',
+    			'rfc' 			=> 'rfc',
+    			'phone' 		=> 'phone',
+    			'cellphone' 	=> 'cellphone',
+    			'alter_phone' 	=> 'alterphone',
+    			'zipcode' 		=> 'zipcode',
+    			'address' 		=> 'address',
+    			'city' 			=> 'city'
+    ]; 
 
 	public function tariffs()
 	{
@@ -19,40 +34,34 @@ class Customer extends Model
 		return $this->hasMany('Location');
 	}
 
-
     /**
-     * Assing data and Store in storage.
+     * Assing data and save in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return boolean $response
      */
 	public function assignAndSave( $request )
 	{
-		$valid = $this->validate($request);
-		if( !$valid['status'] )
-		{
-			return $valid;
-		}
-        $this->name 		= $request['name'];
-        $this->short_name 	= $request['shortname'];
-        $this->rfc 			= $request['rfc'];
-        $this->phone		= $request['phone'];
-        $this->cellphone 	= $request['cellphone'];
-        $this->alter_phone 	= $request['alterphone'];
-        $this->zipcode 		= $request['zipcode'];
-        $this->address 		= $request['address'];
-        $this->city 		= $request['city'];
-        $this->active 		= true;
+		$this->assignInputToFields( $request, $this->map_fields );
+        $this->active = true;
+		
+		if( !$this->validate($request)['status'] )
+			return false;
+
         try{
 	        if( $this->save() )
 	        	return [ 'status' => true ];
-
         }catch( Exception $e ){
-	        return [ 'status' => false, 'errors' => $e->getTrace() ];
+	        return [ 'status' => false ];
         }
         return [ 'status' => false ];
 	}
 
+    /**
+     * Validating data.
+     * @param  Array $request
+     * @return boolean
+     */
 	private function validate( Array $request )
 	{
 		$validator = Validator::make( $request, [
@@ -61,24 +70,8 @@ class Customer extends Model
         ]);
 
 		if( $validator->fails() )
-		{
 			return [ 'status' => false, 'errors' => $validator ];
-		}
 		return [ 'status' => true ];
 	}
 
-	public function active( $status )
-	{
-		$this->active = $status;
-		if( $this->save() )
-		{
-			return true;
-		}
-		return false;
-	}
-
-	public function saveLocation()
-	{
-		
-	}
 }

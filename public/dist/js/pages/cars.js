@@ -42,6 +42,26 @@ var CarHandler = function(){
 				}
 			});
 
+			$.ajax({
+				url: main_path + '/tasks', data:{}, type:'GET', dataType:'json',
+				success: function( _response ){
+					if( _response['status'] == false || _response['status'] == 'false' ){
+						$('#a-id-task').empty();
+						return false;
+					}
+
+					var html = '<option value="0">Sin tarea relacionada</option>';
+					$.each( _response['tasks'], function( i, item ){
+						html += '<option value="' + item['id'] + '">' + item['name'] + '</option>';
+					});
+
+					$('#a-id-task').empty().append( html );
+
+					CarHandler.assignDeleteEvents();
+				}
+			});
+
+
 			CarHandler.assignEvents();
 		},
 

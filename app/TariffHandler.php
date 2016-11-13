@@ -1,8 +1,8 @@
 <?php
 
-namespace Spot;
+namespace App;
 
-use Spot\Tariff;
+use App\Tariff;
 
 class TariffHandler
 {

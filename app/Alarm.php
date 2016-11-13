@@ -1,33 +1,73 @@
 <?php
 
-namespace Spot;
+namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\AssignData;
+use App\Traits\Active;
+use App\Traits\Validating;
+use DB;
 
 class Alarm extends Model
 {
+    use assignData, active, validating;
+
+    private $rules      = [ 
+                'a-title'   => 'required|string',
+                'a-content' => 'required|string',
+                'a-id-car'  => 'required|integer',
+                'a-id-task' => 'integer',
+    ];
+    private $map_fields = [
+                'title'     => 'a-title',
+                'content'   => 'a-content',
+                'car_id'    => 'a-id-car',
+                'task_id'   => 'a-id-task'
+    ];
+
+    public function car()
+    {
+        return $this->belongsTo( Car::class );
+    }
 
     public function assignAndSave( $request )
     {
+        if( !$this->validate( $request )['status'] )
+            return false;
 
-    	$this->title 	= $request['a-title'];
-    	$this->content  = $request['a-content'];
-    	$this->car_id 	= $request['a-id-car'];
-    	$this->task_id  = $request['a-id-task'];
-    	$this->active 	= 1;
+        $this->assignInputToFields( $request, $this->map_fields );
+        $this->active   = 1;
 
-    	if( $this->save() )
-    		return true;
-    	return false;
+        try 
+        {
+            return $this->save();   
+        } 
+        catch (Exception $e) 
+        {
+            return false;
+        }
     }
 
-    public function active( $status )
+    public static function disableAlarms( $car_id, $task_id )
     {
-    	$this->active = $status;
-
-    	if( $this->save() ){
-    		return true;
-    	}
-    	return false;
+        try {
+            $rows = DB::update( "UPDATE alarms SET active = 0 WHERE task_id = $task_id AND car_id = $car_id " );
+        } catch( Exception $e ){
+            return -1;
+        }
     }
+
+    public function deactivate()
+    {
+        $this->active = false;
+        try 
+        {
+            return $this->save();
+        }
+        catch( Exception $e )
+        {
+            return false;
+        }
+    }
+
 }

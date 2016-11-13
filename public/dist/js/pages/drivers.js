@@ -10,7 +10,9 @@ var Driver = function(){
 					_tbody = $('#table-body');
 					$.each( _response['drivers'], function( i, item ){
 						_tbody.append('<tr><td>' +item[ 'name' ]+'</td><td>'+item['lastname']+
-								'</td><td><a data-id="' +item[ 'id' ]+ '" class="btn btn-primary">Activar</a>&nbsp<a data-id="' +item[ 'id' ]+ '"class="btn btn-default btn-danger bdelete">Desactivar</a></td></tr>' );
+								'</td><td>' + 
+								// '<a data-id="' +item[ 'id' ]+ '" class="btn btn-primary">Activar</a>&nbsp' + 
+								'<a data-id="' +item[ 'id' ]+ '"class="btn btn-default btn-danger bdelete">Desactivar</a></td></tr>' );
 					});
 					Driver.assignEvents();
 				}

@@ -1,10 +1,10 @@
 <?php
 
-namespace Spot;
+namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Spot\CarDriver;
-use Spot\Car;
+use App\CarDriver;
+use App\Car;
 use DB;
 
 class CarAssignment extends Model
@@ -14,14 +14,13 @@ class CarAssignment extends Model
 
     public function cars()
     {
-    	return $this->belongsTo( Car::class );
+        return $this->belongsTo( Car::class );
     }
 
     public function carDrivers()
     {
-    	return $this->belongsTo( CarDriver::class );
+        return $this->belongsTo( CarDriver::class );
     }
-
 
     /**
      * Method to deactivate others assigments when a new one is going to be created
@@ -30,22 +29,25 @@ class CarAssignment extends Model
      */
     public function deactivateOthers( $car_id )
     {
-        $assigment = CarAssignment::where( 'car_id', $car_id )
-                                    ->first();
-        if( isset( $assigment ) ) 
-        	return  DB::update( ' UPDATE car_assignments SET active = 0  WHERE car_id = '. $car_id  );
-        return false;
+        return DB::update( ' UPDATE car_assignments SET active = 0  WHERE car_id = '. $car_id  );
     }
 
     /**
-     * My classic way to assign data and save it...
+     * Assign data and save it...
      * @param $car_id, $driver_id
      * @return $boolean
      */
     public function assignAndSave( $car_id, $driver_id )
     {
-		$this->car_id    = $car_id ;
-		$this->driver_id = $driver_id ;
-		return $this->save();
+        $this->car_id    = $car_id ;
+        $this->driver_id = $driver_id ;
+        try
+        {
+            return $this->save();
+        }
+        catch( Exception $e )
+        {
+            return false;
+        }
     }
 }

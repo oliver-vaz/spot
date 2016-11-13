@@ -5,12 +5,20 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use App\Car;
-use App\Alarm;
-use App\CarAssignment;
+use App\Maintenance;
 
-class CarController extends Controller
+class MaintenanceController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -18,9 +26,10 @@ class CarController extends Controller
      */
     public function index()
     {
-        $data['status'] = false;
-        $data['cars']   = Car::where( 'active', 1 )->get() ;
-        if( count( $data['cars'] ) )
+        $data['status']     	= false;
+        $data['maintenances']   = Maintenance::all();
+
+        if( count( $data['maintenances'] ) )
         {
             $data['status'] = true;
         }
@@ -34,7 +43,7 @@ class CarController extends Controller
      */
     public function create()
     {
-        return view( 'forms/car' );
+        return view( 'forms/maintenance' );
     }
 
     /**
@@ -46,9 +55,9 @@ class CarController extends Controller
     public function store(Request $request)
     {
         $data['status'] = false;
-        $car         	= new Car();
+        $maintenance 	= new Maintenance();
 
-        if( $car->assignAndSave( $request->all() ) )
+        if( $maintenance->assignAndSave( $request->all() ) )
         {
             $data['status'] = true;
         }
@@ -63,10 +72,10 @@ class CarController extends Controller
      */
     public function show($id)
     {
-        $car = Car::find( $id );
-        if( isset($car) && $car !== null )
+        $maintenance = Maintenance::find( $id );
+        if( isset($maintenance) && $maintenance !== null )
         {
-            return response()->json( [ 'status' => true , 'data' => $car ] );
+            return response()->json( [ 'status' => true , 'data' => $maintenance ] );
         }
         return response()->json( [ 'status' => false ] );
     }
@@ -79,10 +88,10 @@ class CarController extends Controller
      */
     public function edit($id)
     {
-        $car = Car::find( $id );
-        if( isset($car) && $car !== null )
+        $maintenance = Maintenance::find( $id );
+        if( isset($maintenance) && $maintenance !== null )
         {
-            return view( 'driver/form' )->compact( $car );
+            return view( 'form/maintenance' )->compact( $maintenance );
         }
         return view( '404' );
     }
@@ -97,9 +106,9 @@ class CarController extends Controller
     public function update(Request $request, $id)
     {
         $data['status'] = false;
-        $car            = Car::find( $id );
+        $maintenance    = Maintenance::find( $id );
         
-        if( $car !== null && $car->update_car( $request ) )
+        if( $maintenance !== null && $maintenance->assignAndSave( $request->all() ) )
         {
             $data['status'] = true;
         }
@@ -115,48 +124,12 @@ class CarController extends Controller
     public function destroy($id)
     {
         $data['status'] = false;
-        $car            = Car::find( $id );
+        $maintenance    = Maintenance::find( $id );
         
-        if( $car !== null && $car->active( false ) )
+        if( $maintenance !== null && $maintenance->active( false ) )
         {
             $data['status'] = true;
         }
-        return response()->json( $data );
+        return response()->json( $data );        
     }
-
-    public function showWithData( $id )
-    {
-        $data['status']     = true;
-        $data['car']        = Car::find( $id );
-
-        if( !isset( $data['car'] ) )
-            return response()->json( [ 'status' => false ] );
-
-        $data['assignment'] = CarAssignment::where( 'car_id', $data['car']->id )
-                                            ->where( 'active', 1 )
-                                            ->first();
-        return response()->json( $data );
-    }
-
-    public function saveAlarm( Request $request )
-    {
-        $status     = false;
-        $alarm      = new Alarm();
-        if( $alarm->assignAndSave( $request->all() ) )
-        {
-            $status = true;
-        }
-        return response()->json( [ 'status' => $status ] );
-    }
-
-    public function deleteAlarm( Request $request, $id )
-    {
-        $alarm = Alarm::find( $id );
-        if( !isset( $alarm ) || $alarm === null )
-        {
-            return response()->json( [ 'status' => false ] );
-        }
-        return response()->json( [ 'status' => $alarm->deactivate() ] );
-    }
-
 }

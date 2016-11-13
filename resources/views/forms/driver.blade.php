@@ -10,10 +10,7 @@
           <i class="fa fa-save"></i>
           <b>Nuevo Conductor</b>
         </a>
-        <a class="btn btn-app">
-<i class="fa fa-play"></i>
-Play
-</a>
+
     </div>
   </div><!-- /.content-wrapper -->
   <div class="row">  

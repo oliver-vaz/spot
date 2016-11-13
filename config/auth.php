@@ -67,7 +67,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => Spot\User::class,
+            'model' => App\User::class,
         ],
 
         // 'users' => [

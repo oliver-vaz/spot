@@ -1,6 +1,6 @@
 <?php
 
-namespace Spot;
+namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 

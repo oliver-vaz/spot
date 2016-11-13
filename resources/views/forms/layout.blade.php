@@ -242,12 +242,11 @@
           <ul class="sidebar-menu">
             <li class="header"><b>Opciones</b></li>
             <!-- Optionally, you can add icons to the links -->
-            <li class="active"><a href="{{ URL::to('/')}}"><i class='fa fa-link'></i> <span>Dashboard</span></a></li>
-            <li><a href="{{ URL::to('/trips/create')}}"><i class='fa fa-link'></i> <span>Viajes</span></a></li>
+            <li class="active"><a href="{{ URL::to('/home')}}"><i class='fa fa-link'></i> <span>Dashboard</span></a></li>
+            <li><a href="{{ URL::to('/maintenances/create')}}"><i class='fa fa-link'></i> <span>Mantenimientos</span></a></li>
             <li><a href="{{ URL::to('/drivers/create')}}"><i class='fa fa-link'></i> <span>Conductores</span></a></li>
-            <li><a href="{{ URL::to('/customers/create')}}"><i class='fa fa-link'></i> <span>Clientes</span></a></li>
             <li><a href="{{ URL::to('/cars/create')}}"><i class='fa fa-link'></i> <span>Carros</span></a></li>
-            <li class="treeview">
+            <!--<li><a href="{{ URL::to('/customers/create')}}"><i class='fa fa-link'></i> <span>Pendiente</span></a></li>             <li class="treeview">
               <a href="#"><i class='fa fa-link'></i> <span>Reportes</span> <i class="fa fa-angle-left pull-right"></i></a>
               <ul class="treeview-menu">
                 <li><a href="#">Reporte tipo 1</a></li>
@@ -255,7 +254,7 @@
                 <li><a href="#">Reporte tipo 3</a></li>
                 <li><a href="#">Reporte tipo 4</a></li>
               </ul>
-            </li>
+            </li> -->
           </ul><!-- /.sidebar-menu -->
         </section>
         <!-- /.sidebar -->

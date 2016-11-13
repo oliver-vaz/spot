@@ -1,11 +1,11 @@
 <?php
 
-namespace Spot\Http\Controllers;
+namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use Spot\Http\Requests;
-use Spot\CarDriver;
+use App\Http\Requests;
+use App\CarDriver;
 
 class DriverController extends Controller
 {
