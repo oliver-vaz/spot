@@ -2,7 +2,6 @@
 
 namespace App\Traits;
 
-
 trait assignData
 {
 	function assignInputToFields( $input, $map_fields )
@@ -12,5 +11,4 @@ trait assignData
 			$this->{ $key } = $input[ $value ];
 		}
 	}
-	
 }

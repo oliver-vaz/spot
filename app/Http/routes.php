@@ -2,13 +2,9 @@
 
 use App\ExcelGenerator;
 
-Route::get('/login', function () {
-    return view('login');
+Route::get('/', function () {
+    return redirect('home');
 });
-
-
-
-//Route::resource( 'drivers', 'DriverController' );
 
 Route::group( [ 'middleware' => 'web' ], function(){
 	Route::auth();
@@ -20,6 +16,8 @@ Route::group( [ 'middleware' => 'web' ], function(){
 	Route::resource( 'cars', 'CarController' );
 	Route::resource( 'tasks/', 'TaskController' );
 	Route::resource( 'maintenances/', 'MaintenanceController' );
+
+	Route::delete( 'tasks/{id}', 'TaskController@destroy' );
 
 	//Complementary Routes
 	Route::delete( 'alarms/{id}', 'CarController@deleteAlarm' );
@@ -50,6 +48,4 @@ Route::get( 'test', function(){
 	$e->create( 'myXls', $data, $headers, [ 'x', 'y' ] );
 
 });
-Route::auth();
 
-Route::get('/home', 'HomeController@index');

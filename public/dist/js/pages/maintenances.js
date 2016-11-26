@@ -10,7 +10,6 @@ var MaintenanceHandler = function(){
 			$('#send-maintenance').click( function(){
 				MaintenanceHandler.sendMaintenance();
 			});
-
 		},
 		sendTask: function(){
 			var data = InputHandler.collectInfo( [ 'task-name','task-description', 'task-km','_token' ], [], [] );
@@ -48,6 +47,30 @@ var MaintenanceHandler = function(){
 				}
 			});
 		},
+
+		assignEventDelete: function(){
+			$.each( $('.btn-danger'), function( i, item ){
+				console.log( item );
+				$( item ).unbind( 'click' ).click(function(){
+					console.log( 'evento' );
+					var _id = $( this ).data( 'id' );
+					MaintenanceHandler.deleteTask( _id );
+				});
+			});
+		},
+
+		deleteTask: function( id ){
+			console.log( id );
+			$.ajax({
+				url: main_path + '/tasks/' + id, type: 'DELETE',
+				data: { '_token' : $('_token').val()  },
+				success: function( _response ){
+					if( _response['status'] != true )
+						return false;
+					MaintenanceHandler.populateTables();
+				}
+			});
+		},
 		populateTables: function(){
 			$.ajax({
 				url: main_path + '/tasks', type: 'GET',
@@ -57,11 +80,15 @@ var MaintenanceHandler = function(){
 					var _table  = '';
 					var _select = '';
 					$.each( _response['tasks'], function( i, item ){
-						_table += '<tr><td>' + item[ 'name' ] + '</td><td>' + item['km_peridiocity'] + '</td></tr>';
+						_table += '<tr><td>' + item[ 'name' ] + '</td><td>' + item['km_peridiocity'] + 
+									'</td><td><button class="btn btn-danger pull-left" type="button" data-id="' + 
+									item['id'] + '"" >Borrar</button> </td></tr>';
 						_select += '<option value="' + item[ 'id' ] + '">' + item[ 'name' ] + '</option>';
 					});
 					$( '#tbody-tasks' ).empty().append( _table );
 					$( '#m-task_id' ).empty().append( _select );
+
+					MaintenanceHandler.assignEventDelete();
 				},
 			});
 
@@ -77,7 +104,6 @@ var MaintenanceHandler = function(){
 					$( '#m-car_id' ).empty().append( html );
 				},
 			});
-
 		}
 	}
 }();

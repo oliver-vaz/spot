@@ -25,6 +25,7 @@
               <tr>
                 <th>Nombre</th>
                 <th>Kilometraje</th>
+                <th>Opciones</th>
               </tr>
             </thead>
             <tbody id="tbody-tasks" name="table-body" >

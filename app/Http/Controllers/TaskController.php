@@ -116,7 +116,7 @@ class TaskController extends Controller
         $data['status'] = false;
         $task           = Task::find( $id );
         
-        if( $task !== null && $task->active( false ) )
+        if( $task !== null && isset( $task ) && $task->active( false ) )
         {
             $data['status'] = true;
         }
