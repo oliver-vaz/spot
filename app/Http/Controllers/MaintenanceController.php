@@ -132,4 +132,9 @@ class MaintenanceController extends Controller
         }
         return response()->json( $data );        
     }
+
+    public function getMaintenancesByCar( $id )
+    {
+        return response()->json( Maintenance::getMaintenancesByCar( (int)$id ) );
+    }
 }

@@ -5,10 +5,17 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use App\Alarm;
 use App\Task;
+use App\Car;
 use DB;
+use Validator;
 
 class Maintenance extends Model
 {
+    public function tasks()
+    {
+        return $this->belongsTo( Task::class, 'task_id', 'id' );
+    }
+
     public function assignAndSave( $request )
     {	
     	try {
@@ -61,6 +68,18 @@ class Maintenance extends Model
         if( !isset( $maintenance) )
             return 0;
         return $maintenance->period;
+    }
+
+    public static function getMaintenancesByCar( $id )
+    {
+        $v = Validator::make( [ 'id' => $id ], [ 'id' => 'required|integer' ] );
+        if( $v->fails() )
+            return array();
+        $car          = Car::find( (int) $id );
+        $maintenances = Maintenance::where( 'car_id', $id )->with( 'tasks' )
+                                    ->orderBy( 'created_at', 'DESC' )
+                                    ->get();
+        return array( 'car' => $car, 'maintenances' => $maintenances );
     }
 
 }

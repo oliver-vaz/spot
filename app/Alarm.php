@@ -55,6 +55,7 @@ class Alarm extends Model
         } catch( Exception $e ){
             return -1;
         }
+        return $rows;
     }
 
     public function deactivate()

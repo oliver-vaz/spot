@@ -16,7 +16,10 @@ var CarHandler = function(){
 					var html = '';
 					$.each( _response['cars'], function( i, item ){
 						html += '<tr><td>' + item[ 'marca' ]+'</td><td>'+item['modelo']+'</td><td>'+item['placas']+'</td><td>'+item['anio']+
-								'</td><td><a data-id="' +item[ 'id' ]+ '" class="btn btn-primary bupdate">Ver/Modificar</a> &nbsp <a data-id="' +item[ 'id' ]+ '"class="btn btn-default btn-danger bdelete">Desactivar</a> &nbsp <a data-id="' +item[ 'id' ]+ '" class="btn btn-default btn-warning bwarning">Nueva Alarma</a></td>    </tr>';
+								'</td><td><a data-id="' +item[ 'id' ]+ '" class="btn btn-primary bupdate">Ver/Modificar</a> &nbsp <a data-id="' +
+								item[ 'id' ]+ '"class="btn btn-default btn-danger bdelete">Desactivar</a> &nbsp <a data-id="' +item[ 'id' ]+ 
+								'" class="btn btn-default btn-warning bwarning">Nueva Alarma</a>&nbsp <a data-id="' +item[ 'id' ]+ 
+								'" class="btn btn-default btn-primary bmaintenances">Mantenimientos</a></td></tr>';
 					});
 					$('#table-body').empty().append( html );
 
@@ -108,6 +111,12 @@ var CarHandler = function(){
 				});
 			});
 
+			$('.bmaintenances').each( function(){
+				$( this ).unbind('click').click( function(){ 
+					CarHandler.getMaintenances( this );
+				});
+			});
+
 		},
 
 		assignEvents: function(){
@@ -127,10 +136,10 @@ var CarHandler = function(){
 				CarHandler.sendAlarm();
 			});
 
-			var buttons_update = $('.update-send');
-			$.each( buttons_update, function( i, button_car_update ){
+			$.each( $('.update-send'), function( i, button_car_update ){
 				CarHandler.getCarForUpdate( button_car_update );
 			});
+
 		},
 
 		sendAlarm: function(){
@@ -251,6 +260,30 @@ var CarHandler = function(){
 					console.log( _response);
 				}
 
+			});
+		},
+		getMaintenances: function( _button ){
+			var id_ = $( _button ).data( 'id' );
+			$.ajax({
+				url: main_path + '/maintenances/bycar/' + id_,
+				data:{},
+				type: 'GET',
+				success: function( _response ){
+					if( _response['car'] == null )
+						return false;
+					$('#modal-maintenances').modal( 'show' );
+					var html = '';
+					$.each( _response[ 'maintenances'] , function( i, item ){
+						html += '<div class="small-box bg-green"><div class="inner"><h3>' + item.tasks.name  + 
+									'</h3><p><strong>Hecha por:</strong>' + item.made_by + 
+									'</p><p><strong>Comentarios</strong>' + item.comments 
+									'</p><p><strong>Hecho por</strong>' + item.created_at + '</p></div></div>';
+					});
+					console.log( html );
+					$( '#maintenance-list' ).empty().append( html );
+				}, fail: function( _response ) {
+					console.log( _response );
+				}
 			});
 		}
 

@@ -17,7 +17,7 @@ Route::group( [ 'middleware' => 'web' ], function(){
 	Route::resource( 'tasks/', 'TaskController' );
 	Route::resource( 'maintenances/', 'MaintenanceController' );
 
-	Route::delete( 'tasks/{id}', 'TaskController@destroy' );
+	Route::delete( 'tasks/{id}', 'TaskController@destroys' );
 
 	//Complementary Routes
 	Route::delete( 'alarms/{id}', 'CarController@deleteAlarm' );
@@ -26,6 +26,7 @@ Route::group( [ 'middleware' => 'web' ], function(){
 	Route::post( 'customers/tariff', 'CustomerController@save_tariff' );
 	Route::post( 'cars/update/{id}', 'CarController@update' );
 	Route::get( 'cars/withdata/{id}', 'CarController@showWithData' );
+	Route::get( 'maintenances/bycar/{id}', 'MaintenanceController@getMaintenancesByCar' );
 
 });
 

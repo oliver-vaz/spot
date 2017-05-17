@@ -125,7 +125,6 @@
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>
-
   </div>
 </div>
 
@@ -249,5 +248,29 @@
   </div>
 </div>
 
+
+<!-- Modal Maintenanaces -->
+<div id="modal-maintenances" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h2 class="modal-title">Mantenimientos hechos...</h2>
+      </div>
+      <div  class="modal-body">
+        <h2 id="maintenance-car"></h2>
+        <p></p>
+        <div id="maintenance-list" >
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 @stop
