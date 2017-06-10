@@ -1,6 +1,5 @@
 var CarHandler = function(){
 	return{
-
 		init: function(){
 			/* 
 			 * Method to reload tables and select-option inputs
@@ -12,21 +11,21 @@ var CarHandler = function(){
 						$('#table-body').empty();
 						return false;
 					}
-
 					var html = '';
 					$.each( _response['cars'], function( i, item ){
 						html += '<tr><td>' + item[ 'marca' ]+'</td><td>'+item['modelo']+'</td><td>'+item['placas']+'</td><td>'+item['anio']+
 								'</td><td><a data-id="' +item[ 'id' ]+ '" class="btn btn-primary bupdate">Ver/Modificar</a> &nbsp <a data-id="' +
-								item[ 'id' ]+ '"class="btn btn-default btn-danger bdelete">Desactivar</a> &nbsp <a data-id="' +item[ 'id' ]+ 
+								item[ 'id' ]+ '"class="btn btn-default btn-danger bdelete">Desactivar</a> </td></td>';
+								/* OLD BUTTONS
+								&nbsp <a data-id="' +item[ 'id' ]+ 
 								'" class="btn btn-default btn-warning bwarning">Nueva Alarma</a>&nbsp <a data-id="' +item[ 'id' ]+ 
 								'" class="btn btn-default btn-primary bmaintenances">Mantenimientos</a></td></tr>';
+								*/
 					});
 					$('#table-body').empty().append( html );
-
 					CarHandler.assignDeleteEvents();
 				}
 			});
-
 			$.ajax({   url: main_path + '/drivers', data:{}, type:'GET', dataType:'json',
 				success: function( _response ){
 
@@ -35,7 +34,7 @@ var CarHandler = function(){
 						$('#u-driver-selector').empty();
 						return false;
 					}
-					var html = '';
+					var html = '<option value="">Sin asignar</option>';
 					$.each( _response['drivers'], function( i, item ){
 						html += '<option value="' + item['id'] + '">' + item['name'] + ' ' + item['lastname']  + '</option>';
 					});
@@ -44,7 +43,6 @@ var CarHandler = function(){
 					$('#u-driver-selector').empty().append( html );
 				}
 			});
-
 			$.ajax({
 				url: main_path + '/tasks', data:{}, type:'GET', dataType:'json',
 				success: function( _response ){
@@ -63,26 +61,21 @@ var CarHandler = function(){
 					CarHandler.assignDeleteEvents();
 				}
 			});
-
-
+			$('#del-confirm').unbind('click').click( function(){
+				var id = $('#id-del').val();
+				CarHandler.del(id);
+			});
 			CarHandler.assignEvents();
 		},
 
 		del: function( id_ ){
-			/*
-			 * Deleting a Car...
-			 */
-			var token = $( '#_token' ).val();
-			var ans   = confirm( '¿Esta seguro de borrar?' );
-			if( !ans ) {
-				return false;
-			}
-
+			var token = $('#_token').val();
 			$.ajax({
 				url: main_path +'/cars/'+ id_, data: { _token : token }, type: 'DELETE', dataType: 'json',
 				success: function( _response ){
 
-					CarHandler.init();					
+					CarHandler.init();
+					$('#modal-del').modal('hide');				
 
 				}, fail: function( _response ){
 					console.log( _response );
@@ -94,7 +87,9 @@ var CarHandler = function(){
 			$('.bdelete').each( function(){
 				$(this).unbind( 'click' ).click( function(){
 					var id = $(this).data( 'id' );
-					CarHandler.del( id );
+					var modal = $('#modal-del')
+					modal.modal('show');
+					$('#id-del', modal ).val( id );
 				});
 			});
 
@@ -167,7 +162,7 @@ var CarHandler = function(){
 			/*
 			 * Collecting data to create a new car
 			 */
-			data = InputHandler.collectInfo( [ 'brand', 'model', 'placas', 'year', '_token' ], 
+			data = InputHandler.collectInfo( [ 'brand', 'model', 'placas', 'year', '_token', 'insurance_number', 'insurance_company','insurance_end' ], 
 											 [ 'year-selector', 'driver-selector' ], [] );
 			data.append( 'insurance-price', 0 );
 			$.ajax(
@@ -215,7 +210,6 @@ var CarHandler = function(){
 				});
 			});
 		},
-
 		populateModalUpdate: function( _car, _assignment ){
 			/*
 			 * Just populating data in a modal...
@@ -224,7 +218,11 @@ var CarHandler = function(){
 			$('#u-brand').val( _car.marca );
 			$('#u-model').val( _car.modelo );
 			$('#u-placas').val( _car.placas );
-			$('#u-km').val( _car.km );
+
+			$('#u-insurance_number').val( _car.insurance_number );
+			$('#u-insurance_company').val( _car.insurance_company);
+			$('#u-insurance_end').val( _car.insurance_end );
+
 			$('#u-year').val( _car.anio );
 			$("#u-driver-selector").val( _assignment.driver_id );
 		},
@@ -234,7 +232,7 @@ var CarHandler = function(){
 			 * Sending info to update a record...
 			 */
 			var data = InputHandler.collectInfo( 
-				[ 'u-id', 'u-brand', 'u-model', 'u-placas', 'u-km', '_token' ],
+				[ 'u-id', 'u-brand', 'u-model', 'u-placas', 'u-km', 'u-insurance_number', 'u-insurance_company', 'u-insurance_end', '_token' ],
 				['u-driver-selector', 'u-year' ],[] );
 			data.append( 'u-insurance-price', 0 );
 

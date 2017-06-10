@@ -1,13 +1,14 @@
-<?php
-
-namespace App\Http\Controllers;
+<?php namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
 use App\Customer;
 use App\Location;
 use App\Tariff;
+use App\TariffHandler;
+use App\Trip;
+use App\TripSaver;
+use Auth;
 
 class CustomerController extends Controller
 {
@@ -18,12 +19,10 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $data['status']     = false;
+        $data['status']       = false;
         $data['customers']    = Customer::where( 'active', 1 )->get();
         if( count( $data['customers'] ) )
-        {
             $data['status'] = true;
-        }
         return response()->json( $data );
     }
 
@@ -34,7 +33,8 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        return view( 'forms/customer' );
+        $user = Auth::user();
+        return view( 'forms/customer', compact('user') );
     }
 
     /**
@@ -45,13 +45,8 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        $data['status'] = false;
-        $customer         = new Customer();
-
-        if( $customer->assignAndSave( $request->all() ) )
-        {
-            $data['status'] = true;
-        }
+        $customer   = new Customer();
+        $data       = $customer->assignAndSave( $request->all() );
         return response()->json( $data );
     }
 
@@ -64,9 +59,9 @@ class CustomerController extends Controller
     public function show($id)
     {
         $customer = Customer::find( $id );
-        if( isset( $customer ) && $customer !== null )
+        if(isset($customer->id))
         {
-            return response()->json( [ 'status' => false, 'data' => $customer ] );
+            return response()->json( [ 'status' => true, 'data' => $customer ] );
         }
         return [ 'status' => false ];
     }
@@ -79,8 +74,8 @@ class CustomerController extends Controller
      */
     public function edit($id)
     {
-        $driver = Customer::find( $id );
-        if( isset($driver) && $driver !== null )
+        $c = Customer::find( $id );
+        if( isset($c->id) )
         {
             return view( 'driver/form' )->compact( $driver );
         }
@@ -96,7 +91,12 @@ class CustomerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $c = Customer::find( $id );
+        if( isset($c->id) )
+        {
+            return response()->json( $c->assignAndSave( $request->all() ) );
+        }
+        return response()->json([ 'status' => false, 'message' => 'Cliente no encontrado en el sistema' ]);
     }
 
     /**
@@ -145,12 +145,62 @@ class CustomerController extends Controller
     public function save_tariff( Request $request )
     {
         $customer = Customer::find( $request->input( 'tariff-selector' ) );
-        if( !$customer )
+        if( !isset($customer->id) )
             return response()->json( [ 'status' => false ] );
 
-        $tariff = new Tariff();
-        if( $tariff->assignAndSave( $request->all(), $customer ) )
+        $handler = new TariffHandler();
+        if( $handler->createNewTariff( new Tariff(), $customer, $request->all() ) )
             return response()->json( [ 'status' => true ] );
         return response()->json( [ 'status' => false ] );
+    }
+
+    /**
+     * Saving a trip.
+     *
+     * @param  Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function save_trip( Request $request )
+    {
+        $customer = Customer::find( $request->input( 'customer_id' ) );
+        if( !isset($customer->id) )
+            return response()->json( [ 'status' => false ] );
+
+        $ts = new TripSaver();
+        if( $ts->save( $request->all(), $customer, new Trip()))
+            return response()->json( [ 'status' => true ] );
+        return response()->json( [ 'status' => false ] );
+    }
+
+    /**
+     * Get all locations for a customer
+     *
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function getLocations( $id )
+    {
+        $customer = Customer::find( $id );
+        if(!isset( $customer->id ))
+        {
+            return response()->json([ 'status' => false, 'message' => 'Error: Cliente no encontrado']);
+        }
+        return response()->json([ 'status' => true, 'data' => $customer->getLocations() ]);
+    }
+
+    /**
+     * Get all tariffs for a customer
+     *
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function getTariffs($id)
+    {
+        $tariffs = Tariff::where('customer_id', $id )->orderBy('active', 'DESC')->get();
+        if( count( $tariffs ) <= 0 )
+        {
+            return response()->json([ 'status' => false, 'message' => 'Error: No hay datos']);
+        }
+        return response()->json([ 'status' => true, 'data' => $tariffs ]);
     }
 }

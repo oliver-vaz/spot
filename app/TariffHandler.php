@@ -1,8 +1,7 @@
-<?php
-
-namespace App;
+<?php namespace App;
 
 use App\Tariff;
+use App\Customer;
 
 class TariffHandler
 {
@@ -16,8 +15,9 @@ class TariffHandler
     	}
     }
 
-    public function populateDates( $customer_id )
+    public function createNewTariff( Tariff $tariff, Customer $customer, $request )
     {
-
+        $this->deactivateTariffs( $customer->id );
+        return $tariff->assignAndSave( $request, $customer );
     }
 }

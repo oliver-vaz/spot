@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>AdminLTE 2 | Dashboard</title>
+    <title>Spot Ejecutivo</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     <link href="{{ URL::to( '/' ). "/bootstrap/css/bootstrap.min.css"  }} " rel="stylesheet" type="text/css" />
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
@@ -103,14 +103,14 @@
           <!-- Sidebar user panel (optional) -->
           <div class="user-panel">
             <div class="pull-left image">
-              <img src="{{ URL::to('/'). "/dist/img/user2-160x160.jpg" }}" class="img-circle" alt="User Image" />
+              <img src="{{ URL::to('/'). "/dist/img/avatar_grl.png" }}" class="img-circle" alt="User Image" />
             </div>
             <div class="pull-left info">
               <p>
                 @if( isset($user) )
-                  $user
+                  {!! $user->name !!}
                 @else
-                  Usuario
+                  Usuario 
                 @endif
               </p>
               <!-- Status -->
@@ -133,8 +133,8 @@
           <ul class="sidebar-menu">
             <li class="header"><b>Opciones</b></li>
             <!-- Optionally, you can add icons to the links -->
-            <li class="active"><a href="{{ URL::to('/home')}}"><i class='fa fa-link'></i> <span>Dashboard</span></a></li>
-            <li><a href="{{ URL::to('/maintenances/create')}}"><i class='fa fa-link'></i> <span>Mantenimientos</span></a></li>
+            <li><a href="{{ URL::to('/home')}}"><i class='fa fa-link'></i> <span>Dashboard</span></a></li>
+            <li><a href="{{ URL::to('/customers/create')}}"><i class='fa fa-link'></i> <span>Clientes & Sucursales</span></a></li>
             <li><a href="{{ URL::to('/drivers/create')}}"><i class='fa fa-link'></i> <span>Conductores</span></a></li>
             <li><a href="{{ URL::to('/cars/create')}}"><i class='fa fa-link'></i> <span>Carros</span></a></li>
             <!--<li><a href="{{ URL::to('/customers/create')}}"><i class='fa fa-link'></i> <span>Pendiente</span></a></li>             <li class="treeview">

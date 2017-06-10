@@ -12,7 +12,7 @@ class AddingUserRoles extends Migration
      */
     public function up()
     {
-        DB::table( 'users', function($table){
+        Schema::table( 'users', function( Blueprint $table){
             $table->enum('role', ['regular', 'admin', 'customer'] )->default('regular');
             $table->boolean('active')->default(true);
         });
@@ -25,7 +25,7 @@ class AddingUserRoles extends Migration
      */
     public function down()
     {
-        DB::table( 'users', function($table){
+        Schema::table( 'users', function( Blueprint $table){
             $table->dropColumn('role');
             $table->dropColumn('active');
         });

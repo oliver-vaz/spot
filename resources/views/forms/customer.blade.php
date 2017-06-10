@@ -15,7 +15,7 @@
         </a>
         <a class="btn btn-app" data-toggle="modal" data-target="#modal-locations" >
           <span class="badge bg-teal"></span>
-          <i class="fa fa-inbox"></i>Locaciones
+          <i class="fa fa-inbox"></i>Sucursales
         </a>
     </div>
   </div><!-- /.content-wrapper -->
@@ -55,16 +55,14 @@
 @stop
 
 @section('modals')
-
 <!-- Modal -->
 <div id="myModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
-
     <!-- Modal Add Customer-->
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Nuevo Cliente</h4>
+        <h2 class="modal-title">Nuevo <strong>Cliente<strong></h2>
       </div>
       <div class="modal-body">
         <p>Por favor ingrese los datos</p>
@@ -83,7 +81,6 @@
             <label for="rfc">RFC</label>
             <input id="rfc" class="form-control" type="text" placeholder="">
           </div>
-
           <div class="form-group">
             <label for="phone">Telefono</label>
             <input id="phone" class="form-control" type="text" placeholder="">
@@ -96,7 +93,6 @@
             <label for="alterphone">Telefono Alterno</label>
             <input id="alterphone" class="form-control" type="text" placeholder="">
           </div>
-
           <div class="form-group">
             <label for="address">Direccion</label>
             <input id="address" class="form-control" type="text" placeholder="">
@@ -109,7 +105,6 @@
             <label for="city">Ciudad</label>
             <input id="city" class="form-control" type="text" placeholder="">
           </div>
-
          </div>
         <div class="box-footer">
           <button id="send-button" class="btn btn-primary" type="submit">Guardar</button>
@@ -120,11 +115,8 @@
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>
-
   </div>
 </div>
-
-
 <!-- Modal Add Location -->
 <div id="modal-locations" class="modal fade" role="dialog">
   <div class="modal-dialog">
@@ -133,7 +125,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Agregar Locacion</h4>
+        <h2 class="modal-title">Agregar <strong>Sucursal</strong></h2>
       </div>
       <div class="modal-body">
         <p>Por favor ingrese los datos</p>
@@ -167,11 +159,9 @@
   </div>
 </div>
 
-
 <!-- Modal -->
 <div id="modal-tariffs" class="modal fade" role="dialog">
   <div class="modal-dialog">
-
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
@@ -182,23 +172,19 @@
         <p>Por favor ingrese los datos</p>
         <form action="javascript:void(0);" >
           <div class="box-body">
-
           <div class="form-group">
             <label>Cliente:</label>
               <select id="tariff-selector" class="form-control">
               </select>
           </div>
-
           <div class="form-group">
             <label for="car-price">Precio por Carro:</label>
             <input id="car-price" class="form-control" type="text" placeholder="0">
           </div>
-
           <div class="form-group">
             <label for="person-price">Precio por Persona:</label>
             <input id="person-price" class="form-control" type="text" placeholder="0">
           </div>
-
           <div class="form-group">
             <label>Fecha de inicio de la tarifa:</label>
             <div class="input-group">
@@ -207,12 +193,6 @@
               </div>
               <input id="init-date" class="form-control" type="text" data-mask="" data-inputmask="'alias': 'dd/mm/yyyy'" placeholder="dd/mm/yyyy">
             </div>
-          </div>
-
-          <div class="checkbox">
-            <label>
-              <input id="tarrif-checkbox" type="checkbox" checked >¿Es la Tarifa Actual?
-            </label>
           </div>
          </div>
         <div class="box-footer">
@@ -226,6 +206,107 @@
     </div>
   </div>
 </div>
-
-
+<!-- Modal -->
+<div id="modal-list-locations" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h2 class="modal-title">Lista de <strong>Sucursales</strong></h2>
+      </div>
+      <div class="modal-body">
+        <table class="table table-bordered table-striped">
+          <thead><tr><td>Nombre</td><td>Direccion</td></tr></thead>
+          <tbody id="list-locations"></tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal -->
+<div id="modal-list-tariffs" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h2 class="modal-title">Lista de <strong>Tarifas</strong></h2>
+      </div>
+      <div class="modal-body">
+        <table class="table table-bordered table-striped">
+          <thead><tr><td>Estatus</td><td>Cliente</td><td>Precion por carro</td><td>Precio por Persona</td><td>Fecha Inicio</td></tr></thead>
+          <tbody id="list-tariffs"></tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal -->
+<div id="edit-customer" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal Add Customer-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h2 class="modal-title">Editar <strong>Cliente<strong></h2>
+      </div>
+      <div class="modal-body">
+        <p>Por favor ingrese los datos</p>
+        <form action="javascript:void(0);" >
+          <div class="box-body">
+          <div class="form-group">
+            <label for="name">Nombre</label>
+            <input id="name" class="form-control" type="text" placeholder="">
+            <input id="id" class="form-control" type="hidden" placeholder="">
+          </div>
+          <div class="form-group">
+            <label for="shortname">Nombre Corto</label>
+            <input id="shortname" class="form-control" type="text" placeholder="">
+            <input id="_token" type="hidden" value="{!! csrf_token() !!}">
+          </div>
+          <div class="form-group">
+            <label for="rfc">RFC</label>
+            <input id="rfc" class="form-control" type="text" placeholder="">
+          </div>
+          <div class="form-group">
+            <label for="phone">Telefono</label>
+            <input id="phone" class="form-control" type="text" placeholder="">
+          </div>
+          <div class="form-group">
+            <label for="cellphone">Celular de contacto</label>
+            <input id="cellphone" class="form-control" type="text" placeholder="">
+          </div>
+          <div class="form-group">
+            <label for="alterphone">Telefono Alterno</label>
+            <input id="alterphone" class="form-control" type="text" placeholder="">
+          </div>
+          <div class="form-group">
+            <label for="address">Direccion</label>
+            <input id="address" class="form-control" type="text" placeholder="">
+          </div>
+          <div class="form-group">
+            <label for="zipcode">Codigo Postal</label>
+            <input id="zipcode" class="form-control" type="text" placeholder="">
+          </div>
+          <div class="form-group">
+            <label for="city">Ciudad</label>
+            <input id="city" class="form-control" type="text" placeholder="">
+          </div>
+         </div>
+        <div class="box-footer">
+          <button id="send-edit-customer" class="btn btn-primary" type="submit">Guardar</button>
+        </div>
+      </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 @stop

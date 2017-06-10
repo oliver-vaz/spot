@@ -104,7 +104,7 @@ class CarController extends Controller
         $data['status'] = false;
         $car            = Car::find( $id );
         
-        if( $car !== null && $car->update_car( $request ) )
+        if( isset($car->id) && $car->update_car( $request ) )
         {
             $data['status'] = true;
         }

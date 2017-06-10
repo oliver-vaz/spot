@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddingAliasDrivers extends Migration
+class AddingNolicenseCars extends Migration
 {
     /**
      * Run the migrations.
@@ -12,8 +12,8 @@ class AddingAliasDrivers extends Migration
      */
     public function up()
     {
-        DB::table('drivers', function($table){
-            $table->string('alias');
+        Schema::table( 'cars', function( Blueprint $table ){ 
+            $table->integer('insurance_number');
         });
     }
 
@@ -24,8 +24,8 @@ class AddingAliasDrivers extends Migration
      */
     public function down()
     {
-        DB::table('drivers', function($table){
-            $table->dropColumn('alias');
+        Schema::table( 'cars', function( Blueprint $table ){
+            $table->dropColumn('insurance_number');
         });
     }
 }

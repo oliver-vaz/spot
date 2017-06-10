@@ -1,11 +1,10 @@
-<?php
-
-namespace App;
+<?php namespace App;
 
 use Validator;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\AssignData;
 use App\Traits\Active;
+use App\Location;
 
 class Customer extends Model
 {
@@ -26,12 +25,12 @@ class Customer extends Model
 
 	public function tariffs()
 	{
-		return $this->hasMany('Tariff');
+		return $this->hasMany(Tariff::class);
 	}
 
 	public function locations()
 	{
-		return $this->hasMany('Location');
+		return $this->hasMany(Location::class);
 	}
 
     /**
@@ -74,4 +73,8 @@ class Customer extends Model
 		return [ 'status' => true ];
 	}
 
+    public function getLocations()
+    {
+        return Location::where('customer_id', $this->id )->get();
+    }
 }

@@ -15,14 +15,20 @@ class CarDriver extends Model
     private $rules		= [
         'name' 				=> 'required|string',
         'last_name' 		=> 'required|string',
-        'wage_per_person' 	=> 'required|numeric',
-        'wage_per_car' 		=> 'required|numeric',
+        'wage_per_person' 	=> 'numeric',
+        'wage_per_car' 		=> 'numeric',
     ];
     private $map_fields = [
     	'name' 				=> 'name',
     	'lastname'			=> 'last_name',
     	'wage_per_person' 	=> 'wage_per_person',
-    	'wage_per_car' 		=> 'wage_per_car'
+    	'wage_per_car' 		=> 'wage_per_car',
+        'alias'             => 'alias',
+        'address'           => 'address',
+        'phone'             => 'phone',
+        'cellphone'         => 'cellphone',
+        'number_licence'    => 'number_licence',
+        'end_licence'       => 'end_licence'
     ];
 
     /**

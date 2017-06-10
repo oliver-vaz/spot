@@ -1,11 +1,9 @@
-<?php
-
-namespace App\Http\Controllers;
+<?php namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
 use App\CarDriver;
+use Auth;
 
 class DriverController extends Controller
 {
@@ -22,7 +20,7 @@ class DriverController extends Controller
     public function index()
     {
         $data['status']     = false;
-        $data['drivers']    = CarDriver::where( 'active', 1 )->get();
+        $data['drivers']    = CarDriver::all();
         if( count( $data['drivers'] ) )
         {
             $data['status'] = true;
@@ -37,7 +35,8 @@ class DriverController extends Controller
      */
     public function create()
     {
-        return view( 'forms/driver' );
+        $user = Auth::user();
+        return view( 'forms/driver', compact('user') );
     }
 
     /**
@@ -102,7 +101,7 @@ class DriverController extends Controller
         $data['status'] = false;
         $driver         = CarDriver::find( $id );
         
-        if( $driver !== null && $driver->update( $request ) )
+        if( isset( $driver->id ) && $driver->assignAndSave( $request->all() ) )
         {
             $data['status'] = true;
         }
@@ -121,6 +120,20 @@ class DriverController extends Controller
         $driver         = CarDriver::find( $id );
         
         if( $driver !== null && $driver->active( false ) )
+        {
+            $data['status'] = true;
+        }
+        return response()->json( $data );
+        
+    }
+
+    /**
+     *
+     */
+    public function activate($id)
+    {
+        $driver         = CarDriver::find( $id );
+        if( isset($driver->id) && $driver->active( true ) )
         {
             $data['status'] = true;
         }

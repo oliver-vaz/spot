@@ -1,6 +1,4 @@
-<?php
-
-namespace App;
+<?php namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\AssignData;
@@ -19,7 +17,10 @@ class Car extends Model
                             'modelo'            => 'model', 
                             'placas'            => 'placas', 
                             'anio'              => 'year-selector', 
-                            'insurance_price'   => 'insurance-price'
+                            'insurance_price'   => 'insurance-price',
+                            'insurance_end'     => 'insurance_end',
+                            'insurance_company' => 'insurance_company',
+                            'insurance_number'  => 'insurance_number'
                             ];
 
     private   $map_fields_u = [ 
@@ -28,7 +29,10 @@ class Car extends Model
                             'placas'            => 'u-placas', 
                             'anio'              => 'u-year', 
                             'km'                => 'u-km',
-                            'insurance_price'   => 'u-insurance-price' 
+                            'insurance_price'   => 'u-insurance-price',
+                            'insurance_end'     => 'u-insurance_end',
+                            'insurance_company' => 'u-insurance_company',
+                            'insurance_number'  => 'u-insurance_number'
                             ];
     public function assigments()
     {

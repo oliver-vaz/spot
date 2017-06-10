@@ -8,7 +8,7 @@
     <div class="block">
         <a class="btn btn-app" data-toggle="modal" data-target="#myModal" >
           <i class="fa fa-save"></i>
-          <b>Nuevo Conductor</b>
+          <b>Nuevo <strong>Conductor</strong></b>
         </a>
 
     </div>
@@ -25,6 +25,8 @@
               <tr>
                 <th>Nombres</th>
                 <th>Apellidos</th>
+                <th>Alias</th>
+                <th>Licencia Fecha de Vencimiento</th>
                 <th>Acciones</th>
               </tr>
             </thead>
@@ -43,16 +45,14 @@
 @stop
 
 @section('modals')
-
 <!-- Modal -->
 <div id="myModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
-
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Nuevo Conductor</h4>
+        <h2 class="modal-title">Nuevo <strong>Conductor</strong></h2>
       </div>
       <div class="modal-body">
         <p>Por favor ingrese los datos</p>
@@ -66,8 +66,32 @@
             <label for="last-name">Apellidos</label>
             <input id="last-name" class="form-control" type="text" placeholder="">
             <input id="token" type="hidden" value="{{ csrf_token() }}">
-
-            <input id="token2" type="hidden" value="{{ csrf_token() }}">
+            <input id="id" type="hidden" value="">
+            <input id="type" type="hidden" value="">
+          </div>
+          <div class="form-group">
+            <label for="alias">Alias</label>
+            <input id="alias" class="form-control" type="text" placeholder="">
+          </div>
+          <div class="form-group">
+            <label for="address">Direccion</label>
+            <input id="address" class="form-control" type="text" placeholder="">
+          </div>
+          <div class="form-group">
+            <label for="phone">Telefono</label>
+            <input id="phone" class="form-control" type="text" placeholder="">
+          </div>
+          <div class="form-group">
+            <label for="cellphone">Celular</label>
+            <input id="cellphone" class="form-control" type="text" placeholder="">
+          </div>
+          <div class="form-group">
+            <label for="driver_license">No. Licencia</label>
+            <input id="driver_license" class="form-control" type="text" placeholder="">
+          </div>
+          <div class="form-group">
+            <label for="license_end">Fecha Vencimiento Licencia</label>
+            <input id="license_end" class="form-control" type="date" placeholder="">
           </div>
         </div>
         <div class="box-footer">
@@ -76,11 +100,32 @@
       </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
       </div>
     </div>
 
   </div>
 </div>
 
+
+<!-- Modal Confirm Changes -->
+<div id="modal-del" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h2 class="modal-title">¿Desea deshabilitar el conductor?</h2>
+      </div>
+      <div class="modal-body">
+        <p>Por favor, confirme la accion</p>
+      </div>
+      <div class="modal-footer">
+        <input id="del-driver-id" type="hidden">
+        <button id="del-confirm" type="button" class="btn btn-default" >Desactivar</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
 @stop
